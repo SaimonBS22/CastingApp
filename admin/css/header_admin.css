@@ -1,0 +1,69 @@
+.contenedorHeader {
+  background-color: #0f0f0f;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 20px 0;    
+  box-shadow: inset 1px 0 0 #e5e5e5, inset -1px 0 0 #e5e5e5;
+  border-radius: 5px; 
+}
+.page-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.header-inner {
+  max-width: 1100px;      
+  margin: 0 auto;
+  padding: 10px 60px;        
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 100px;
+}
+
+/* LOGO */
+.logo a {
+  font-family: 'Cinzel', serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* MENU */
+.menu {
+  display: flex;
+  gap: 28px;
+}
+
+.menu a {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  color: #dcdcdc;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.menu a:hover {
+  color: #ffffff;
+}
+
+.menu a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 1px;
+  background-color: #ffffff;
+  transition: width 0.3s ease;
+}
+
+.menu a:hover::after {
+  width: 100%;
+}

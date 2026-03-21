@@ -1,0 +1,105 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: #d9d9d9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-container {
+  background: #1f2329;
+  width: 320px;
+  padding: 25px 20px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+.form-container h2 {
+  color: #ffffff;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+
+.input-group {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px 12px 10px 36px;
+  background: #2a2f36;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 14px;
+}
+
+.input-group input::placeholder {
+  color: #9aa0a6;
+}
+
+.input-group input:focus {
+  outline: 1px solid #2ecc71;
+}
+
+/* Icono */
+.input-group i {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #2ecc71;
+  font-size: 14px;
+}
+
+/* Texto chico */
+.form-container p {
+  font-size: 11px;
+  color: #9aa0a6;
+  margin: 10px 0 15px;
+}
+
+/* Botones */
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.buttons button {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+}
+
+/* Botón principal */
+.btn-primary {
+  background: #2ecc71;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #27ae60;
+}
+
+/* Botón secundario */
+.btn-secondary {
+  background: #ffffff;
+  color: #1f2329;
+}
+
+.btn-secondary:hover {
+  background: #e5e5e5;
+}

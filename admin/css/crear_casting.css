@@ -1,0 +1,101 @@
+/* CONTENEDOR GENERAL */
+
+.form-wrapper{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    margin-top:40px;
+}
+
+/* TITULO */
+
+.titulo-form{
+    text-align:center;
+    margin-top:40px;
+    font-size:32px;
+    font-weight:600;
+}
+
+/* TARJETA DEL FORM */
+
+.form-casting{
+
+    width:500px;
+    background:white;
+
+    padding:40px;
+
+    border-radius:10px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+
+}
+
+/* GRUPOS */
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+/* INPUTS */
+
+.form-casting input,
+.form-casting textarea{
+
+    width:100%;
+    padding:12px;
+
+    border:1px solid #ddd;
+
+    border-radius:6px;
+
+    font-size:14px;
+
+}
+
+/* TEXTAREA */
+
+.form-casting textarea{
+    min-height:120px;
+    resize:vertical;
+}
+
+/* LABEL */
+
+.form-group label{
+    font-size:14px;
+    color:#555;
+}
+
+/* BOTON */
+
+.btn-crear-casting{
+
+    margin-top:10px;
+
+    background:black;
+
+    color:white;
+
+    border:none;
+
+    padding:12px;
+
+    border-radius:6px;
+
+    font-size:15px;
+
+    cursor:pointer;
+
+    transition:0.2s;
+}
+
+.btn-crear-casting:hover{
+    background:#222;
+}

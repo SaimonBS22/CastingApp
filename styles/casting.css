@@ -1,0 +1,198 @@
+/* CONTENEDOR GENERAL */
+
+
+.castings-container{
+
+max-width:1100px;
+
+margin:auto;
+
+padding:40px 20px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:25px;
+
+}
+
+/* TITULO */
+
+.titulo-castings{
+
+font-size:30px;
+
+margin-bottom:10px;
+
+}
+
+/* CARD */
+
+.casting-card{
+
+background:white;
+
+border-radius:10px;
+
+padding:20px;
+
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+
+display:flex;
+
+align-items:center;
+
+gap:20px;
+
+transition:0.2s;
+
+}
+
+.casting-card:hover{
+
+transform:translateY(-3px);
+
+box-shadow:0 12px 30px rgba(0,0,0,0.12);
+
+}
+
+/* IMAGEN */
+
+.casting-img{
+
+width:200px;
+
+height:130px;
+
+object-fit:cover;
+
+border-radius:200px;
+
+flex-shrink:0;
+
+}
+
+/* INFO */
+
+.casting-info{
+
+flex:1;
+
+}
+
+/* TITULO */
+
+.casting-titulo{
+
+font-size:20px;
+
+margin-bottom:8px;
+
+}
+
+/* DESCRIPCION */
+
+.casting-desc{
+
+color:#555;
+
+line-height:1.5;
+
+font-size:14px;
+
+}
+
+/* BOTON POSTULAR */
+
+.btn-postular{
+
+background:black;
+
+color:white;
+
+border:none;
+
+padding:10px 18px;
+
+border-radius:6px;
+
+cursor:pointer;
+
+font-size:14px;
+
+transition:0.2s;
+
+}
+
+.btn-postular:hover{
+
+background:#222;
+
+}
+
+/* BADGE POSTULADO */
+
+.postulado-badge{
+
+background:#e7f8ee;
+
+color:#1b8a4b;
+
+padding:8px 14px;
+
+border-radius:20px;
+
+font-size:13px;
+
+font-weight:600;
+
+}
+
+/* BOTON MIS POSTULACIONES */
+
+.btn-mis-postulaciones{
+
+display:block;
+
+width:fit-content;
+
+margin:40px auto 0 auto;
+
+background:black;
+color:white;
+
+padding:12px 22px;
+
+border-radius:8px;
+
+text-decoration:none;
+
+font-size:14px;
+font-weight:600;
+
+transition:all 0.25s ease;
+
+box-shadow:0 4px 10px rgba(0,0,0,0.15);
+
+}
+
+/* hover */
+
+.btn-mis-postulaciones:hover{
+
+background:#222;
+
+transform:translateY(-2px);
+
+box-shadow:0 6px 15px rgba(0,0,0,0.25);
+
+}
+
+/* active (click) */
+
+.btn-mis-postulaciones:active{
+
+transform:scale(0.98);
+
+}

@@ -1,0 +1,110 @@
+/* ===== LOGIN ===== */
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: #f2f2f2;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-container {
+  width: 340px;
+  padding: 30px 24px;
+  background: #1f2329;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+
+/* Título */
+.login-container h1 {
+  color: #ffffff;
+  margin-bottom: 22px;
+  font-weight: 600;
+}
+
+/* Inputs */
+.login-container .input-group {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.login-container .input-group input {
+  width: 87%;
+  padding: 11px 12px 11px 38px;
+  background: #2a2f36;
+  border: none;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.login-container .input-group input::placeholder {
+  color: #9aa0a6;
+}
+
+.login-container .input-group input:focus {
+  outline: 1px solid #2ecc71;
+}
+
+/* Íconos */
+.login-container .input-group i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #2ecc71;
+  font-size: 15px;
+}
+
+/* Texto recuperar contraseña */
+.login-container p {
+  font-size: 12px;
+  color: #9aa0a6;
+  margin: 12px 0 18px;
+}
+
+.login-container p a {
+  color: #2ecc71;
+  text-decoration: none;
+}
+
+.login-container p a:hover {
+  text-decoration: underline;
+}
+
+/* Botón principal */
+.login-container .btn-primary {
+  width: 100%;
+  padding: 10px;
+  background: #2ecc71;
+  border: none;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.login-container .btn-primary:hover {
+  background: #27ae60;
+}
+
+/* Link registro */
+.login-container .register-link {
+  margin-top: 15px;
+  font-size: 12px;
+  color: #9aa0a6;
+}
+
+.login-container .register-link a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.login-container .register-link a:hover {
+  color: #2ecc71;
+}

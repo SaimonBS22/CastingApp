@@ -1,0 +1,300 @@
+/* ===== RESET BÁSICO ===== */
+
+html {
+  overflow-y: scroll;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  background-color: #f4f6f8;
+  color: #222;
+}
+
+/* ===== CONTENEDOR GENERAL (EXCEPTO HEADER) ===== */
+.main-content {
+  
+  margin: 0 auto;
+}
+.page-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ===== TITULO ===== */
+.perfil-title {
+  margin-top: 40px;
+  margin-bottom: 10px;
+  font-size: 34px;
+  font-weight: 700;
+}
+
+/* ===== BOTÓN VOLVER ===== */
+.perfil-back {
+  display: inline-block;
+  margin-bottom: 25px;
+}
+
+.btn-secondary {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-secondary:hover {
+  background-color: #f0f0f0;
+}
+
+/* ===== CARDS GENERALES ===== */
+.perfil-item,
+.perfil-subtitle,
+.perfil-list,
+.perfil-media-title,
+.perfil-empty,
+.perfil-media {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin-bottom: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+}
+
+/* ===== DATOS ===== */
+.perfil-item {
+  font-size: 16px;
+}
+
+.perfil-item b {
+  display: inline-block;
+  width: 140px;
+  color: #555;
+}
+
+/* ===== SUBTITULOS ===== */
+.perfil-subtitle {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* ===== LISTA ===== */
+.perfil-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 0;
+}
+
+.perfil-list-item {
+  background-color: #111;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+/* ===== MEDIA ===== */
+.perfil-media-title {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* GRID CORREGIDO */
+.perfil-media {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  align-items: stretch;
+}
+
+/* CARD BASE PARA MEDIA */
+.perfil-media > * {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background-color: #fff;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+/* IMAGEN */
+.perfil-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* VIDEO */
+.perfil-video {
+  
+  height: 100%;
+  display: block;
+}
+
+/* LINK VIDEO */
+.perfil-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.perfil-link a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+.perfil-link a:hover {
+  text-decoration: underline;
+}
+
+/* VACÍO */
+.perfil-empty {
+  font-style: italic;
+  color: #777;
+}
+
+/* ===== BOTÓN EDITAR ===== */
+.perfil-edit {
+  display: flex;
+  justify-content: flex-end;
+  margin: 40px 0;
+}
+
+.btn-primary{
+
+display:inline-block;
+
+background:#111;
+color:#fff;
+
+padding:10px 18px;
+
+border-radius:8px;
+
+text-decoration:none;
+
+font-size:14px;
+font-weight:600;
+
+line-height:1;
+
+width:auto;
+height:auto;
+
+box-shadow:0 4px 10px rgba(0,0,0,0.15);
+
+transition:all 0.25s ease;
+
+}
+
+.btn-primary:hover{
+background:#000;
+transform:translateY(-2px);
+box-shadow:0 6px 15px rgba(0,0,0,0.25);
+}
+.contenedor-botones{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-top:40px;
+}
+
+.btn-logout{
+
+display:inline-block;
+
+background:#e74c3c;
+
+color:white;
+
+padding:10px 18px;
+
+border-radius:8px;
+
+text-decoration:none;
+
+font-size:14px;
+
+font-weight:600;
+
+line-height:1; /* 🔥 clave para que no crezca */
+
+width:auto; /* 🔥 evita que se estire */
+
+height:auto; /* 🔥 evita altura rara */
+
+box-shadow:0 4px 10px rgba(0,0,0,0.15);
+
+transition:all 0.25s ease;
+
+}
+
+/* hover */
+
+.btn-logout:hover{
+
+background:#c0392b;
+
+transform:translateY(-2px);
+
+box-shadow:0 6px 15px rgba(0,0,0,0.25);
+
+}
+
+/* click */
+
+.btn-logout:active{
+
+transform:scale(0.97);
+
+}
+
+.crear-perfil-box{
+
+background:white;
+
+padding:30px;
+
+border-radius:12px;
+
+box-shadow:0 6px 20px rgba(0,0,0,0.08);
+
+text-align:center;
+
+margin-top:30px;
+
+}
+
+.crear-perfil-box p{
+
+font-size:16px;
+
+color:#555;
+
+margin-bottom:20px;
+
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  body > *:not(.contenedorHeader) {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .perfil-item b {
+    width: auto;
+    display: block;
+    margin-bottom: 4px;
+  }
+}
