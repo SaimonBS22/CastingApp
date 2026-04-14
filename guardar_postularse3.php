@@ -27,85 +27,51 @@ if (isset($_POST['experiencia'])) {
 }
 
 /* =========================
-   FOTOS
+   OBTENER TALENTO_ID
 ========================= */
-if (!empty($_FILES['fotos']['name'][0])) {
-  foreach ($_FILES['fotos']['tmp_name'] as $i => $tmp) {
 
-    if ($_FILES['fotos']['error'][$i] === 0) {
+$stmt = $conn->prepare("SELECT id FROM talentos WHERE usuario_id = ?");
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$talento = $result->fetch_assoc();
 
-      $nombre = uniqid() . "_" . basename($_FILES['fotos']['name'][$i]);
-      $destino = "./uploads/fotos/" . $nombre;
+$talento_id = $talento['id'];
 
-      if (move_uploaded_file($tmp, $destino)) {
-        $stmt = $conn->prepare("
-          INSERT INTO talento_media (usuario_id, tipo, archivo)
-          VALUES (?, 'foto', ?)
-        ");
-        $stmt->bind_param("is", $usuario_id, $nombre);
-        $stmt->execute();
-      }
-    }
-  }
-}
 
 /* =========================
-   VIDEOS
+   IDIOMAS
 ========================= */
-if (!empty($_FILES['videos']['name'][0])) {
-  foreach ($_FILES['videos']['tmp_name'] as $i => $tmp) {
 
-    if ($_FILES['videos']['error'][$i] === 0) {
+// borrar anteriores
+$conn->query("DELETE FROM idiomas_talento WHERE talento_id = $talento_id");
 
-      $nombre = uniqid() . "_" . basename($_FILES['videos']['name'][$i]);
-      $destino = "./uploads/videos/" . $nombre;
-
-      if (move_uploaded_file($tmp, $destino)) {
-        $stmt = $conn->prepare("
-          INSERT INTO talento_media (usuario_id, tipo, archivo)
-          VALUES (?, 'video', ?)
-        ");
-        $stmt->bind_param("is", $usuario_id, $nombre);
-        $stmt->execute();
-      }
-    }
-  }
-}
-
-/* =========================
-   LINKS
-========================= */
-if (!empty($_POST['links'])) {
-  foreach ($_POST['links'] as $link) {
-    if (!empty(trim($link))) {
-      $stmt = $conn->prepare("
-        INSERT INTO talento_media (usuario_id, tipo, url)
-        VALUES (?, 'link', ?)
-      ");
-      $stmt->bind_param("is", $usuario_id, $link);
-      $stmt->execute();
-    }
-  }
-}
-
-/* =========================
-   HABILIDADES
-========================= */
-$conn->query("DELETE FROM usuario_habilidad WHERE usuario_id = $usuario_id");
-
-if (!empty($_POST['habilidades'])) {
-  foreach ($_POST['habilidades'] as $hab) {
+if (!empty($_POST['idiomas'])) {
+  foreach ($_POST['idiomas'] as $idioma_id) {
     $stmt = $conn->prepare("
-      INSERT INTO usuario_habilidad (usuario_id, habilidad_id)
+      INSERT INTO idiomas_talento (talento_id, idioma_id)
       VALUES (?, ?)
     ");
-    $stmt->bind_param("ii", $usuario_id, $hab);
+    $stmt->bind_param("ii", $talento_id, $idioma_id);
     $stmt->execute();
   }
 }
 
+
 /* =========================
-   REDIRECCION
+   HABILIDADES (NUEVO)
 ========================= */
-header("Location: usuarios/miPerfil.php");
-exit;
+
+// borrar anteriores
+$conn->query("DELETE FROM talento_habilidad WHERE talento_id = $talento_id");
+
+if (!empty($_POST['habilidades'])) {
+  foreach ($_POST['habilidades'] as $habilidad_id) {
+    $stmt = $conn->prepare("
+      INSERT INTO talento_habilidad (talento_id, habilidad_id)
+      VALUES (?, ?)
+    ");
+    $stmt->bind_param("ii", $talento_id, $habilidad_id);
+    $stmt->execute();
+  }
+}

@@ -23,7 +23,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <div class="page-wrapper header-inner">
 
      <div class="logo">
-            <a href="/castingApp/admin/index.php">CastingPro</a>
+            <a href="/castingApp/admin/index.php">Micaela Garcia</a>
      </div>
 
     <nav class="menu">

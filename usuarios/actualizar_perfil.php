@@ -8,6 +8,16 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
+/* ===== OBTENER TALENTO_ID ===== */
+$stmt = $conn->prepare("SELECT id FROM talentos WHERE usuario_id = ?");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$talento = $result->fetch_assoc();
+
+$talento_id = $talento['id'];
+
+/* ===== DATOS ===== */
 $apellido = $_POST['apellido'] ?? null;
 $telefono = $_POST['telefono'] ?? null;
 $fecha_nacimiento = $_POST['fecha_nacimiento'] ?: null;
@@ -22,8 +32,11 @@ $talle_ropa = $_POST['talle_ropa'] ?? null;
 $talle_calzado = $_POST['talle_calzado'] ?? null;
 $experiencia = $_POST['experiencia'] ?? null;
 $observaciones = $_POST['observaciones'] ?? null;
-$habilidades = $_POST['habilidades'] ?? [];
 
+$habilidades = $_POST['habilidades'] ?? [];
+$idiomas = $_POST['idiomas'] ?? [];
+
+/* ===== UPDATE TALENTO ===== */
 $sql = "
 UPDATE talentos SET
  apellido=?, telefono=?, fecha_nacimiento=?, ubicacion=?, genero=?,
@@ -42,20 +55,44 @@ $stmt->bind_param(
 );
 $stmt->execute();
 
-/* ===== Habilidades ===== */
-$del = $conn->prepare("DELETE FROM usuario_habilidad WHERE usuario_id=?");
-$del->bind_param("i",$user_id);
-$del->execute();
 
-if ($habilidades) {
-  $ins = $conn->prepare(
-    "INSERT INTO usuario_habilidad (usuario_id, habilidad_id) VALUES (?,?)"
-  );
+/* =========================
+   HABILIDADES (CORREGIDO)
+========================= */
+
+// borrar anteriores
+$conn->query("DELETE FROM talento_habilidad WHERE talento_id = $talento_id");
+
+if (!empty($habilidades)) {
+  $stmt = $conn->prepare("
+    INSERT INTO talento_habilidad (talento_id, habilidad_id)
+    VALUES (?, ?)
+  ");
   foreach ($habilidades as $h) {
-    $ins->bind_param("ii",$user_id,$h);
-    $ins->execute();
+    $stmt->bind_param("ii", $talento_id, $h);
+    $stmt->execute();
   }
 }
+
+
+/* =========================
+   IDIOMAS (NUEVO)
+========================= */
+
+// borrar anteriores
+$conn->query("DELETE FROM idiomas_talento WHERE talento_id = $talento_id");
+
+if (!empty($idiomas)) {
+  $stmt = $conn->prepare("
+    INSERT INTO idiomas_talento (talento_id, idioma_id)
+    VALUES (?, ?)
+  ");
+  foreach ($idiomas as $i) {
+    $stmt->bind_param("ii", $talento_id, $i);
+    $stmt->execute();
+  }
+}
+
 
 header("Location: miPerfil.php?edit=success");
 exit;

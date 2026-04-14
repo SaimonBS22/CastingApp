@@ -25,6 +25,7 @@ $stmt = $conn->prepare("
   SELECT 
     u.nombre,
     u.email,
+    t.id as talento_id,
     t.apellido,
     t.fecha_nacimiento,
     t.telefono,
@@ -50,12 +51,20 @@ $perfil = $stmt->get_result()->fetch_assoc();
 
 $talento = $perfil;
 
-/* ===== HABILIDADES ===== */
+/* ===== HABILIDADES (CORREGIDO) ===== */
 $hab = $conn->query("
   SELECT h.nombre
   FROM habilidades h
-  JOIN usuario_habilidad uh ON h.id = uh.habilidad_id
-  WHERE uh.usuario_id = $usuario_id
+  JOIN talento_habilidad th ON h.id = th.habilidad_id
+  WHERE th.talento_id = {$talento['talento_id']}
+");
+
+/* ===== IDIOMAS (NUEVO) ===== */
+$idiomas = $conn->query("
+  SELECT i.nombre
+  FROM idiomas i
+  JOIN idiomas_talento it ON i.id = it.idioma_id
+  WHERE it.talento_id = {$talento['talento_id']}
 ");
 
 /* ===== MEDIA ===== */
@@ -70,7 +79,6 @@ $mediaStmt->execute();
 $media = $mediaStmt->get_result();
 
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -93,22 +101,17 @@ $media = $mediaStmt->get_result();
 
 <?php if (!$perfilExiste): ?>
 
-<!-- ================= CREAR PERFIL ================= -->
-
 <div class="crear-perfil-box">
-
 <p>Aún no creaste tu perfil de talento.</p>
 
 <a href="postularse.php" class="btn-primary">
 Crear mi perfil
 </a>
-
 </div>
 
 <?php else: ?>
 
-<!-- ================= MEDIA ================= -->
-
+<!-- MEDIA -->
 <h3 class="perfil-media-title">📸 Fotos y videos</h3>
 
 <div class="media perfil-media">
@@ -156,8 +159,7 @@ Ver video
 
 <hr>
 
-<!-- ================= DATOS PERSONALES ================= -->
-
+<!-- DATOS PERSONALES -->
 <h3 class="perfil-subtitle">👤 Datos personales</h3>
 
 <p class="perfil-item"><b>Nombre:</b> <?= htmlspecialchars($perfil['nombre']) ?></p>
@@ -170,8 +172,7 @@ Ver video
 
 <hr>
 
-<!-- ================= DATOS FÍSICOS ================= -->
-
+<!-- DATOS FÍSICOS -->
 <h3 class="perfil-subtitle">📏 Datos físicos</h3>
 
 <p class="perfil-item"><b>Altura:</b> <?= htmlspecialchars($talento['altura'] ?? '') ?> cm</p>
@@ -184,8 +185,7 @@ Ver video
 
 <hr>
 
-<!-- ================= EXPERIENCIA ================= -->
-
+<!-- EXPERIENCIA -->
 <h3 class="perfil-subtitle">🎭 Experiencia</h3>
 
 <p class="perfil-item"><b>Nivel:</b> <?= htmlspecialchars($talento['experiencia'] ?? '') ?></p>
@@ -201,25 +201,39 @@ Ver video
 
 <hr>
 
-<!-- ================= HABILIDADES ================= -->
-
+<!-- HABILIDADES -->
 <h3 class="perfil-subtitle">⭐ Habilidades</h3>
 
 <?php if ($hab->num_rows > 0): ?>
 
 <ul class="perfil-list">
-
 <?php while ($h = $hab->fetch_assoc()): ?>
-
 <li class="perfil-list-item"><?= htmlspecialchars($h['nombre']) ?></li>
-
 <?php endwhile; ?>
-
 </ul>
 
 <?php else: ?>
 
 <p class="perfil-empty">No cargaste habilidades todavía.</p>
+
+<?php endif; ?>
+
+<hr>
+
+<!-- IDIOMAS (NUEVO) -->
+<h3 class="perfil-subtitle">🌎 Idiomas</h3>
+
+<?php if ($idiomas->num_rows > 0): ?>
+
+<ul class="perfil-list">
+<?php while ($i = $idiomas->fetch_assoc()): ?>
+<li class="perfil-list-item"><?= htmlspecialchars($i['nombre']) ?></li>
+<?php endwhile; ?>
+</ul>
+
+<?php else: ?>
+
+<p class="perfil-empty">No cargaste idiomas todavía.</p>
 
 <?php endif; ?>
 

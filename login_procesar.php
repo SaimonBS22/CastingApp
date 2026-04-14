@@ -2,12 +2,19 @@
 session_start();
 include 'includes/db.php';
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 $email = $_POST['email'];
 $password = $_POST['password'];
 
 $stmt = $conn->prepare(
   "SELECT id, nombre, password, rol FROM usuarios WHERE email = ?"
 );
+
+if (!$stmt) {
+    die("Error en prepare: " . $conn->error);
+}
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $result = $stmt->get_result();
