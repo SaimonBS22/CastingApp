@@ -29,7 +29,8 @@ $stmt = $conn->prepare("
     t.apellido,
     t.fecha_nacimiento,
     t.telefono,
-    t.ubicacion,
+    t.provincia,
+    t.localidad,
     t.genero,
     t.altura,
     t.peso,
@@ -51,7 +52,7 @@ $perfil = $stmt->get_result()->fetch_assoc();
 
 $talento = $perfil;
 
-/* ===== HABILIDADES (CORREGIDO) ===== */
+/* ===== HABILIDADES ===== */
 $hab = $conn->query("
   SELECT h.nombre
   FROM habilidades h
@@ -59,7 +60,7 @@ $hab = $conn->query("
   WHERE th.talento_id = {$talento['talento_id']}
 ");
 
-/* ===== IDIOMAS (NUEVO) ===== */
+/* ===== IDIOMAS ===== */
 $idiomas = $conn->query("
   SELECT i.nombre
   FROM idiomas i
@@ -111,7 +112,8 @@ Crear mi perfil
 
 <?php else: ?>
 
-<!-- MEDIA -->
+<!-- ================= MEDIA ================= -->
+
 <h3 class="perfil-media-title">📸 Fotos y videos</h3>
 
 <div class="media perfil-media">
@@ -159,7 +161,8 @@ Ver video
 
 <hr>
 
-<!-- DATOS PERSONALES -->
+<!-- ================= DATOS PERSONALES ================= -->
+
 <h3 class="perfil-subtitle">👤 Datos personales</h3>
 
 <p class="perfil-item"><b>Nombre:</b> <?= htmlspecialchars($perfil['nombre']) ?></p>
@@ -167,12 +170,17 @@ Ver video
 <p class="perfil-item"><b>Email:</b> <?= htmlspecialchars($perfil['email']) ?></p>
 <p class="perfil-item"><b>Fecha de nacimiento:</b> <?= htmlspecialchars($talento['fecha_nacimiento'] ?? '') ?></p>
 <p class="perfil-item"><b>Teléfono:</b> <?= htmlspecialchars($talento['telefono'] ?? '') ?></p>
-<p class="perfil-item"><b>Ubicación:</b> <?= htmlspecialchars($talento['ubicacion'] ?? '') ?></p>
+
+<!-- 🔥 NUEVA UBICACION -->
+<p class="perfil-item"><b>Provincia:</b> <?= htmlspecialchars($talento['provincia'] ?? '') ?></p>
+<p class="perfil-item"><b>Localidad:</b> <?= htmlspecialchars($talento['localidad'] ?? '') ?></p>
+
 <p class="perfil-item"><b>Género:</b> <?= !empty($talento['genero']) ? ucfirst($talento['genero']) : '' ?></p>
 
 <hr>
 
-<!-- DATOS FÍSICOS -->
+<!-- ================= DATOS FÍSICOS ================= -->
+
 <h3 class="perfil-subtitle">📏 Datos físicos</h3>
 
 <p class="perfil-item"><b>Altura:</b> <?= htmlspecialchars($talento['altura'] ?? '') ?> cm</p>
@@ -185,7 +193,8 @@ Ver video
 
 <hr>
 
-<!-- EXPERIENCIA -->
+<!-- ================= EXPERIENCIA ================= -->
+
 <h3 class="perfil-subtitle">🎭 Experiencia</h3>
 
 <p class="perfil-item"><b>Nivel:</b> <?= htmlspecialchars($talento['experiencia'] ?? '') ?></p>
@@ -201,7 +210,8 @@ Ver video
 
 <hr>
 
-<!-- HABILIDADES -->
+<!-- ================= HABILIDADES ================= -->
+
 <h3 class="perfil-subtitle">⭐ Habilidades</h3>
 
 <?php if ($hab->num_rows > 0): ?>
@@ -220,7 +230,8 @@ Ver video
 
 <hr>
 
-<!-- IDIOMAS (NUEVO) -->
+<!-- ================= IDIOMAS ================= -->
+
 <h3 class="perfil-subtitle">🌎 Idiomas</h3>
 
 <?php if ($idiomas->num_rows > 0): ?>

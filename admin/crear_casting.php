@@ -45,6 +45,33 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
 <input type="file" name="imagen" accept="image/*">
 </div>
 
+<hr>
+
+<h3>Personajes</h3>
+
+<div id="contenedor-personajes">
+    <div class="personaje-box">
+        <input type="text" name="personajes[nombre][]" placeholder="Nombre del personaje">
+
+        <input type="text" name="personajes[descripcion][]" placeholder="Descripción">
+
+        <input type="number" name="personajes[edad_min][]" placeholder="Edad mínima">
+
+        <input type="number" name="personajes[edad_max][]" placeholder="Edad máxima">
+
+        <select name="personajes[genero][]">
+            <option value="">Género</option>
+            <option value="masculino">Masculino</option>
+            <option value="femenino">Femenino</option>
+            <option value="otro">Otro</option>
+        </select>
+    </div>
+</div>
+
+<button type="button" onclick="agregarPersonaje()">➕ Agregar personaje</button>
+
+<br><br>
+
 <button type="submit" class="btn-crear-casting">
 Crear casting
 </button>
@@ -52,6 +79,31 @@ Crear casting
 </form>
 
 </div>
+
+<script>
+function agregarPersonaje() {
+    const contenedor = document.getElementById("contenedor-personajes");
+
+    const div = document.createElement("div");
+    div.classList.add("personaje-box");
+
+    div.innerHTML = `
+        <input type="text" name="personajes[nombre][]" placeholder="Nombre del personaje">
+        <input type="text" name="personajes[descripcion][]" placeholder="Descripción">
+        <input type="number" name="personajes[edad_min][]" placeholder="Edad mínima">
+        <input type="number" name="personajes[edad_max][]" placeholder="Edad máxima">
+        <select name="personajes[genero][]">
+            <option value="">Género</option>
+            <option value="masculino">Masculino</option>
+            <option value="femenino">Femenino</option>
+            <option value="otro">Otro</option>
+        </select>
+        <hr>
+    `;
+
+    contenedor.appendChild(div);
+}
+</script>
 
 </body>
 </html>

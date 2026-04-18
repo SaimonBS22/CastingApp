@@ -16,7 +16,6 @@ $check->execute();
 $check->store_result();
 
 if ($check->num_rows > 0) {
-  // 🚫 Ya tiene talento creado
   header("Location: miPerfil.php?error=ya_creado");
   exit;
 }
@@ -30,20 +29,21 @@ if ($check->num_rows > 0) {
   <link rel="stylesheet" href="/castingApp/styles/postularse.css">
 </head>
 <body>
- 
+
 <?php include '../includes/header.php'; ?>
 
 <h2>Datos personales</h2><br>
 <a href="/castingApp/index.php"><button>Volver</button></a>
 
 <form method="POST" action="/castingApp/guardar.php">
+
   <input type="text" name="nombre" placeholder="Nombre" required><br><br>
 
-   <input type="text" name="apellido" placeholder="Apellido"><br><br>
+  <input type="text" name="apellido" placeholder="Apellido"><br><br>
 
-  <input type="date" name="fecha_nacimiento" placeholder="Fecha de nacimiento"><br><br>
+  <input type="date" name="fecha_nacimiento"><br><br>
 
-   <input type="number" name="telefono" placeholder="Telefono"><br><br>
+  <input type="number" name="telefono" placeholder="Telefono"><br><br>
 
   <select name="genero">
     <option value="">Género</option>
@@ -52,10 +52,25 @@ if ($check->num_rows > 0) {
     <option value="otro">Otro</option>
   </select><br><br>
 
-  <input type="text" name="ubicacion" placeholder="Ubicacion" required><br><br>
-  <input type="text" name="email" placeholder="Ejemplo@mail.com" required><br><br>
+  <!-- 🔥 NUEVA UBICACION -->
+
+  <select name="provincia" required>
+    <option value="">Provincia</option>
+    <option value="Buenos Aires">Buenos Aires</option>
+    <option value="CABA">CABA</option>
+  </select><br><br>
+
+  <select name="localidad" required>
+    <option value="">Localidad</option>
+    <option value="San Isidro">San Isidro</option>
+    <option value="Saavedra">Saavedra</option>
+    <option value="Vicente López">Vicente López</option>
+  </select><br><br>
+
+  <input type="email" name="email" placeholder="Ejemplo@mail.com" required><br><br>
 
   <button type="submit">Guardar y continuar</button><br><br>
+
 </form>
 
 <?php include '../includes/footer.php'; ?>

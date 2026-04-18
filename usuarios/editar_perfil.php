@@ -1,7 +1,6 @@
 <?php
 session_start();
 include '../includes/db.php';
-include '../includes/header.php';
 
 if (!isset($_SESSION['user_id'])) {
   header("Location: /castingApp/login.php");
@@ -28,12 +27,8 @@ if (!$talento) {
 
 $talento_id = $talento['id'];
 
-/* ===== HABILIDADES DEL USUARIO ===== */
-$habStmt = $conn->prepare("
-  SELECT habilidad_id 
-  FROM talento_habilidad 
-  WHERE talento_id = ?
-");
+/* ===== HABILIDADES ===== */
+$habStmt = $conn->prepare("SELECT habilidad_id FROM talento_habilidad WHERE talento_id = ?");
 $habStmt->bind_param("i", $talento_id);
 $habStmt->execute();
 $habilidades_usuario = array_column(
@@ -41,16 +36,11 @@ $habilidades_usuario = array_column(
   'habilidad_id'
 );
 
-/* ===== TODAS LAS HABILIDADES ===== */
 $allHab = $conn->query("SELECT id, nombre FROM habilidades")
                ->fetch_all(MYSQLI_ASSOC);
 
-/* ===== IDIOMAS DEL USUARIO ===== */
-$idiomaStmt = $conn->prepare("
-  SELECT idioma_id 
-  FROM idiomas_talento 
-  WHERE talento_id = ?
-");
+/* ===== IDIOMAS ===== */
+$idiomaStmt = $conn->prepare("SELECT idioma_id FROM idiomas_talento WHERE talento_id = ?");
 $idiomaStmt->bind_param("i", $talento_id);
 $idiomaStmt->execute();
 $idiomas_usuario = array_column(
@@ -58,7 +48,6 @@ $idiomas_usuario = array_column(
   'idioma_id'
 );
 
-/* ===== TODOS LOS IDIOMAS ===== */
 $allIdiomas = $conn->query("SELECT id, nombre FROM idiomas")
                   ->fetch_all(MYSQLI_ASSOC);
 
@@ -71,6 +60,14 @@ $mediaStmt = $conn->prepare("
 $mediaStmt->bind_param("i", $user_id);
 $mediaStmt->execute();
 $media = $mediaStmt->get_result();
+
+/* ===== LISTAS DE UBICACION ===== */
+$provincias = ["Buenos Aires", "CABA"];
+
+$localidades = [
+  "Buenos Aires" => ["San Isidro", "Vicente López", "Tigre"],
+  "CABA" => ["Palermo", "Recoleta", "Saavedra"]
+];
 ?>
 
 <!DOCTYPE html>
@@ -82,114 +79,172 @@ $media = $mediaStmt->get_result();
 </head>
 <body>
 
-<h2 class="edit-title">Editar perfil</h2>
-<h3 class="edit-greeting">Hola <?= htmlspecialchars($usuario['nombre']) ?> 👋</h3>
+<?php include '../includes/header.php'; ?>
+
+<h2>Editar perfil</h2>
+<h3>Hola <?= htmlspecialchars($usuario['nombre']) ?> 👋</h3>
+
+<!-- ================= MEDIA ================= -->
+
+<h3>Fotos, videos y links</h3>
+
+<div>
+<?php while ($m = $media->fetch_assoc()): ?>
+
+  <?php if ($m['tipo'] === 'foto'): ?>
+    <img src="../uploads/fotos/<?= $m['archivo'] ?>" width="120">
+  <?php elseif ($m['tipo'] === 'video'): ?>
+    <video width="150" controls>
+      <source src="../uploads/videos/<?= $m['archivo'] ?>">
+    </video>
+  <?php elseif ($m['tipo'] === 'link'): ?>
+    <a href="<?= $m['url'] ?>" target="_blank">Ver video</a>
+  <?php endif; ?>
+
+  <form method="POST" action="eliminar_media.php">
+    <input type="hidden" name="media_id" value="<?= $m['id'] ?>">
+    <button type="submit">Eliminar</button>
+  </form>
+
+<?php endwhile; ?>
+</div>
+
+<form method="POST" action="guardar_media.php" enctype="multipart/form-data">
+  <input type="file" name="fotos[]" multiple><br><br>
+  <input type="file" name="videos[]" multiple><br><br>
+
+  <input type="url" name="links[]" placeholder="Link video"><br>
+  <input type="url" name="links[]" placeholder="Link video"><br><br>
+
+  <button type="submit">Guardar contenido</button>
+</form>
 
 <hr>
 
-<form class="edit-form" method="POST" action="/castingApp/usuarios/actualizar_perfil.php">
+<!-- ================= FORM PERFIL ================= -->
 
-<!-- ================= HABILIDADES ================= -->
+<form method="POST" action="/castingApp/usuarios/actualizar_perfil.php">
 
-<h3 class="form-section-title">Habilidades</h3>
+<h3>Datos personales</h3>
 
-<div id="contenedor-habilidades">
-<?php if (!empty($habilidades_usuario)): ?>
-  <?php foreach ($habilidades_usuario as $habId): ?>
-    <select name="habilidades[]">
-      <option value="">Seleccionar habilidad</option>
-      <?php foreach ($allHab as $h): ?>
-        <option value="<?= $h['id'] ?>"
-          <?= $h['id'] == $habId ? 'selected' : '' ?>>
-          <?= htmlspecialchars($h['nombre']) ?>
-        </option>
-      <?php endforeach; ?>
-    </select>
+<input type="text" name="apellido" value="<?= $talento['apellido'] ?>"><br>
+<input type="date" name="fecha_nacimiento" value="<?= $talento['fecha_nacimiento'] ?>"><br>
+<input type="text" name="telefono" value="<?= $talento['telefono'] ?>"><br>
+
+<!-- 🔥 NUEVA UBICACION -->
+
+<select name="provincia" id="provincia" onchange="cargarLocalidades()">
+  <option value="">Provincia</option>
+  <?php foreach ($provincias as $p): ?>
+    <option value="<?= $p ?>" <?= $talento['provincia']==$p?'selected':'' ?>>
+      <?= $p ?>
+    </option>
   <?php endforeach; ?>
-<?php else: ?>
-  <select name="habilidades[]">
-    <option value="">Seleccionar habilidad</option>
-    <?php foreach ($allHab as $h): ?>
-      <option value="<?= $h['id'] ?>">
-        <?= htmlspecialchars($h['nombre']) ?>
-      </option>
-    <?php endforeach; ?>
-  </select>
-<?php endif; ?>
-</div>
+</select><br><br>
 
-<button type="button" onclick="agregarHabilidad()">➕ Agregar habilidad</button>
+<select name="localidad" id="localidad">
+  <option value="">Localidad</option>
+</select><br><br>
+
+<select name="genero">
+  <option value="">Género</option>
+  <option value="masculino" <?= $talento['genero']=='masculino'?'selected':'' ?>>Masculino</option>
+  <option value="femenino" <?= $talento['genero']=='femenino'?'selected':'' ?>>Femenino</option>
+  <option value="otro" <?= $talento['genero']=='otro'?'selected':'' ?>>Otro</option>
+</select>
 
 <hr>
 
-<!-- ================= IDIOMAS ================= -->
+<h3>Datos físicos</h3>
 
-<h3 class="form-section-title">Idiomas</h3>
+<input type="number" name="altura" value="<?= $talento['altura'] ?>"><br>
+<input type="number" name="peso" value="<?= $talento['peso'] ?>"><br>
 
-<div id="contenedor-idiomas">
-<?php if (!empty($idiomas_usuario)): ?>
-  <?php foreach ($idiomas_usuario as $idiomaId): ?>
-    <select name="idiomas[]">
-      <option value="">Seleccionar idioma</option>
-      <?php foreach ($allIdiomas as $i): ?>
-        <option value="<?= $i['id'] ?>"
-          <?= $i['id'] == $idiomaId ? 'selected' : '' ?>>
-          <?= htmlspecialchars($i['nombre']) ?>
-        </option>
-      <?php endforeach; ?>
-    </select>
-  <?php endforeach; ?>
-<?php else: ?>
-  <select name="idiomas[]">
-    <option value="">Seleccionar idioma</option>
-    <?php foreach ($allIdiomas as $i): ?>
-      <option value="<?= $i['id'] ?>">
-        <?= htmlspecialchars($i['nombre']) ?>
-      </option>
-    <?php endforeach; ?>
-  </select>
-<?php endif; ?>
-</div>
+<input type="text" name="color_pelo" value="<?= $talento['color_pelo'] ?>"><br>
+<input type="text" name="color_ojos" value="<?= $talento['color_ojos'] ?>"><br>
+<input type="text" name="tez" value="<?= $talento['tez'] ?>"><br>
 
-<button type="button" onclick="agregarIdioma()">➕ Agregar idioma</button>
+<input type="text" name="talle_ropa" value="<?= $talento['talle_ropa'] ?>"><br>
+<input type="text" name="talle_calzado" value="<?= $talento['talle_calzado'] ?>"><br>
+
+<hr>
+
+<h3>Experiencia</h3>
+
+<select name="experiencia">
+  <option value="">Seleccionar</option>
+  <option value="Ninguna" <?= $talento['experiencia']=='Ninguna'?'selected':'' ?>>Ninguna</option>
+  <option value="Amateur" <?= $talento['experiencia']=='Amateur'?'selected':'' ?>>Amateur</option>
+  <option value="Profesional" <?= $talento['experiencia']=='Profesional'?'selected':'' ?>>Profesional</option>
+</select>
 
 <br><br>
 
-<button class="btn-primary" type="submit">Guardar cambios</button>
+<textarea name="observaciones"><?= $talento['observaciones'] ?></textarea>
+
+<hr>
+
+<h3>Habilidades</h3>
+<div id="contenedor-habilidades">
+<?php foreach ($habilidades_usuario as $habId): ?>
+<select name="habilidades[]">
+  <?php foreach ($allHab as $h): ?>
+    <option value="<?= $h['id'] ?>" <?= $h['id']==$habId?'selected':'' ?>>
+      <?= $h['nombre'] ?>
+    </option>
+  <?php endforeach; ?>
+</select>
+<?php endforeach; ?>
+</div>
+<button type="button" onclick="agregarHabilidad()">➕</button>
+
+<hr>
+
+<h3>Idiomas</h3>
+<div id="contenedor-idiomas">
+<?php foreach ($idiomas_usuario as $idiomaId): ?>
+<select name="idiomas[]">
+  <?php foreach ($allIdiomas as $i): ?>
+    <option value="<?= $i['id'] ?>" <?= $i['id']==$idiomaId?'selected':'' ?>>
+      <?= $i['nombre'] ?>
+    </option>
+  <?php endforeach; ?>
+</select>
+<?php endforeach; ?>
+</div>
+<button type="button" onclick="agregarIdioma()">➕</button>
+
+<br><br>
+
+<button type="submit">Guardar cambios</button>
 </form>
 
 <script>
-const habilidades = <?php echo json_encode($allHab); ?>;
-const idiomas = <?php echo json_encode($allIdiomas); ?>;
+const habilidades = <?= json_encode($allHab) ?>;
+const idiomas = <?= json_encode($allIdiomas) ?>;
+const localidades = <?= json_encode($localidades) ?>;
 
-function crearSelect(data, name) {
-    let select = document.createElement("select");
-    select.name = name;
+function cargarLocalidades() {
+  const provincia = document.getElementById("provincia").value;
+  const select = document.getElementById("localidad");
 
-    let optionDefault = document.createElement("option");
-    optionDefault.value = "";
-    optionDefault.text = "Seleccionar";
-    select.appendChild(optionDefault);
+  select.innerHTML = '<option value="">Localidad</option>';
 
-    data.forEach(item => {
-        let option = document.createElement("option");
-        option.value = item.id;
-        option.text = item.nombre;
-        select.appendChild(option);
+  if (localidades[provincia]) {
+    localidades[provincia].forEach(loc => {
+      let option = document.createElement("option");
+      option.value = loc;
+      option.text = loc;
+      select.appendChild(option);
     });
-
-    return select;
+  }
 }
 
-function agregarHabilidad() {
-    const contenedor = document.getElementById("contenedor-habilidades");
-    contenedor.appendChild(crearSelect(habilidades, "habilidades[]"));
-}
-
-function agregarIdioma() {
-    const contenedor = document.getElementById("contenedor-idiomas");
-    contenedor.appendChild(crearSelect(idiomas, "idiomas[]"));
-}
+// cargar al iniciar (para edición)
+window.onload = function() {
+  cargarLocalidades();
+  document.getElementById("localidad").value = "<?= $talento['localidad'] ?>";
+};
 </script>
 
 <?php include '../includes/footer.php'; ?>

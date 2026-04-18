@@ -37,23 +37,10 @@ ORDER BY id DESC
 
 <?php while($c = $castings->fetch_assoc()): ?>
 
-<?php
-/* verificar si ya postuló */
-$stmt = $conn->prepare("
-SELECT id FROM postulaciones
-WHERE casting_id=? AND usuario_id=?
-");
-$stmt->bind_param("ii",$c['id'],$user_id);
-$stmt->execute();
-$ya = $stmt->get_result()->fetch_assoc();
-?>
-
 <div class="casting-card">
 
     <?php if(!empty($c['imagen'])): ?>
-
         <img src="../uploads/<?= htmlspecialchars($c['imagen']) ?>" class="casting-img">
-
     <?php endif; ?>
 
     <div class="casting-info">
@@ -70,42 +57,24 @@ $ya = $stmt->get_result()->fetch_assoc();
 
     <div class="casting-action">
 
-    <?php if($ya): ?>
-
-        <span class="postulado-badge">
-            ✔ Ya estás postulado
-        </span>
-
-    <?php else: ?>
-
-        <form action="postular.php" method="POST">
-
-            <input type="hidden" name="casting_id" value="<?= $c['id'] ?>">
-
-            <button type="submit" class="btn-postular">
-                Postularme
-            </button>
-
-        </form>
-
-    <?php endif; ?>
+        <!-- BOTÓN NUEVO -->
+        <a href="ver_casting.php?id=<?= $c['id'] ?>" class="btn-postular">
+            Ver detalles
+        </a>
 
     </div>
-
 
 </div>
 
 <?php endwhile; ?>
 
-    <a href="mis_postulaciones.php" class="btn-mis-postulaciones">
- Mis postulaciones
+<a href="mis_postulaciones.php" class="btn-mis-postulaciones">
+    Mis postulaciones
 </a>
 
 </div>
 
-<?php 
-  include "../includes/footer.php";
-?>
+<?php include "../includes/footer.php"; ?>
 
 </body>
 </html>

@@ -22,6 +22,10 @@ if (!$casting) {
     die("Casting no encontrado");
 }
 
+$personajes = $conn->query("
+    SELECT * FROM personajes WHERE casting_id = $casting_id
+");
+
 /* OBTENER POSTULADOS */
 $stmt = $conn->prepare("
 SELECT 
@@ -174,6 +178,24 @@ Ver talento
 
 </table>
 
+<?php endif; ?>
+
+<h2>Personajes del casting</h2>
+
+<?php if ($personajes->num_rows > 0): ?>
+
+<ul>
+<?php while($p = $personajes->fetch_assoc()): ?>
+    <li>
+        <b><?= $p['nombre'] ?></b> 
+        (<?= $p['edad_min'] ?> - <?= $p['edad_max'] ?> años)
+        - <?= $p['genero'] ?>
+    </li>
+<?php endwhile; ?>
+</ul>
+
+<?php else: ?>
+<p>No hay personajes definidos</p>
 <?php endif; ?>
 
 </body>

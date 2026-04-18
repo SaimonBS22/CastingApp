@@ -1,0 +1,98 @@
+/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f4f6f8;
+    color: #222;
+    padding: 40px;
+}
+
+/* ===== TITULOS ===== */
+h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+h2 {
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+/* ===== DESCRIPCION ===== */
+p {
+    color: #555;
+    margin-bottom: 10px;
+}
+
+/* ===== CONTENEDOR GENERAL ===== */
+.container {
+    max-width: 900px;
+    margin: auto;
+}
+
+/* ===== CARD PERSONAJE ===== */
+.personaje-card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    transition: 0.2s ease;
+}
+
+.personaje-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
+
+/* ===== TITULO PERSONAJE ===== */
+.personaje-card h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+/* ===== BADGE POSTULADO ===== */
+.postulado-badge {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 6px 12px;
+    background: #e6f7ed;
+    color: #1a7f37;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* ===== BOTON ===== */
+.btn-postular {
+    margin-top: 10px;
+    padding: 10px 16px;
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    font-size: 14px;
+}
+
+.btn-postular:hover {
+    background: #333;
+}
+
+/* ===== FORM ===== */
+form {
+    margin-top: 10px;
+}
+
+/* ===== SEPARADOR ===== */
+hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 25px 0;
+}
